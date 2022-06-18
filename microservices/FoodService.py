@@ -11,7 +11,7 @@ class DefaultResponseModel(BaseModel):
     message:str
 
 
-@router.get(
+@router.put(
     "/foodService/givefoodlike/{food_id}/{user_id}",
     response_model=DefaultResponseModel
 )
@@ -53,7 +53,7 @@ def give_food_like(food_id: int, user_id: str):
     return {"statusCode": 200, "message": "Like adicionado com sucesso."}
 
 
-@router.delete(
+@router.put(
     "/foodService/removefoodlike/{food_id}/{user_id}",
     response_model=DefaultResponseModel
 )
