@@ -11,7 +11,7 @@ class DefaultResponseModel(BaseModel):
     message:str
 
 
-@router.put(
+@router.get(
     "/foodService/givefoodlike/{food_id}/{user_id}",
     response_model=DefaultResponseModel
 )

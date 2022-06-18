@@ -1,4 +1,5 @@
-import fastapi.middleware.cors as _cors
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 import firebase_admin
 from typing import Union
 from fastapi import FastAPI
@@ -10,25 +11,24 @@ databaseURL = 'https://appdobandeco-default-rtdb.firebaseio.com';
 cred_obj = firebase_admin.credentials.Certificate('./firebase_credentials.json')
 firebase_admin.initialize_app(cred_obj, {'databaseURL': databaseURL})
 
-app = FastAPI()
+
 
 '''
 Configuração de CORS
 '''
-origins = [
-    "http://127.0.0.1:19002",
+origins = ["*"]
 
+middleware = [
+    Middleware(
+        CORSMiddleware,
+        allow_origins=['*'],
+        allow_credentials=True,
+        allow_methods=['*'],
+        allow_headers=['*']
+    )
 ]
 
-app.add_middleware(
-    _cors.CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
-
+app = FastAPI(middleware=middleware)
 
 app.include_router(FoodService.router)
 
