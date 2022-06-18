@@ -59,6 +59,7 @@ def give_food_like(food_id: int, user_id: str):
 )
 def remove_food_like(food_id: int, user_id: str):
     userRef = db.reference( 'users/').child(user_id);
+    userLikesRef = db.reference( 'users/' + user_id+ '/' +likedFoods)
     foodRef = db.reference( 'foods/'+ str(food_id));
 
     likedFoods = []
@@ -75,9 +76,13 @@ def remove_food_like(food_id: int, user_id: str):
     else:
        return {"statusCode": 500, "message": "Esse usuário não deu like nessa comida."}
 
-    userRef.update({
-        'likedFoods' : likedFoods
-    })
+
+    if likedFoods == []:
+        userLikesRef.remove()
+    else:
+        userRef.update({
+            'likedFoods' : likedFoods
+        })
 
     #Adiciona o like na comida
     try:
