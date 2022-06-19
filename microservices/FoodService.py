@@ -84,6 +84,23 @@ async def get_food_by_id(food_id, response: Response):
     response.status_code = status.HTTP_200_OK
     return {"statusCode": response.status_code, "dataObj": foodData};
 
+#Get food by name and desc
+@router.get("/foodService/getFoodIdByNameAndDesc/{name}/{desc}", response_model=GetResponseModel)
+async def get_Food_Id_By_Name_Desc(name, desc, response: Response):
+    foodRef = db.reference( 'foods/');
+    foodData = foodRef.get()
+
+    foodId = ''
+
+    for food in foodData:
+        foodObjRef = foodRef.child(food)
+        foodObj = foodObjRef.get()
+        if foodObj['foodName'] == name and foodObj['foodDesc'] == desc:
+            foodId = foodObjRef.key
+
+    response.status_code = status.HTTP_200_OK
+    return {"statusCode": response.status_code, "dataObj": {"foodId" : foodId}};
+
 
 #Get all foods
 @router.get("/foodService/getAllFoodsData/", response_model=GetResponseModel)
