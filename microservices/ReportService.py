@@ -94,6 +94,6 @@ async def get_report_by_date_type(date, vegan, response: Response):
 
 
     response.status_code = status.HTTP_200_OK
-    return {"statusCode": response.status_code, "dataObj": {}};
+    return {"statusCode": response.status_code, "dataObj": {"selectedReports": selectedReports}};
 
 
