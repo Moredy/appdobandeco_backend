@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from microservices import FoodService
 from microservices import MenuService
 from microservices import ReportService
+from microservices import UserService
 from fastapi.responses import RedirectResponse
 
 databaseURL = 'https://appdobandeco-default-rtdb.firebaseio.com';
@@ -31,7 +32,7 @@ app.add_middleware(
 app.include_router(FoodService.router)
 app.include_router(MenuService.router)
 app.include_router(ReportService.router)
-
+app.include_router(UserService.router)
 
 @app.get("/")
 def read_root():
