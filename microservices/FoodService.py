@@ -165,7 +165,7 @@ async def create_food(foodBody: FoodBody, response: Response):
     "/foodService/givefoodlike/{food_id}/{user_id}",
     response_model=DefaultResponseModel
 )
-def give_food_like(food_id: int, user_id: str , response: Response):
+def give_food_like(food_id: str, user_id: str , response: Response):
     userRef = db.reference( 'users/').child(user_id);
     foodRef = db.reference( 'foods/'+ str(food_id));
 
@@ -209,7 +209,7 @@ def give_food_like(food_id: int, user_id: str , response: Response):
     "/foodService/removefoodlike/{food_id}/{user_id}",
     response_model=DefaultResponseModel
 )
-def remove_food_like(food_id: int, user_id: str, response: Response):
+def remove_food_like(food_id: str, user_id: str, response: Response):
     userRef = db.reference( 'users/').child(user_id);
     foodRef = db.reference( 'foods/'+ str(food_id));
 
