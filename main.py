@@ -7,6 +7,10 @@ from microservices import MenuService
 from microservices import ReportService
 from microservices import UserService
 from fastapi.responses import RedirectResponse
+from fastapi_utils.tasks import repeat_every
+
+#Scrapper
+from scrapper.job1 import runJob1, jobInterval, waitFirst
 
 databaseURL = 'https://appdobandeco-default-rtdb.firebaseio.com';
 
@@ -14,6 +18,12 @@ cred_obj = firebase_admin.credentials.Certificate('./firebase_credentials.json')
 firebase_admin.initialize_app(cred_obj, {'databaseURL': databaseURL})
 
 app = FastAPI()
+
+#Scrapper
+@app.on_event("startup")
+@repeat_every(seconds=jobInterval, wait_first=waitFirst)
+def startup():
+    runJob1()
 
 '''
 Configuração de CORS
