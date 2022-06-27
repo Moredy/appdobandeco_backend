@@ -8,6 +8,7 @@ from microservices import ReportService
 from microservices import UserService
 from fastapi.responses import RedirectResponse
 from fastapi_utils.tasks import repeat_every
+import uvicorn
 
 #Scrapper
 from scrapper.job1 import runJob1, jobInterval, waitFirst
@@ -47,3 +48,6 @@ app.include_router(UserService.router)
 @app.get("/")
 def read_root():
     return RedirectResponse("/redoc")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

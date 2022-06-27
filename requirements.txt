@@ -3,3 +3,5 @@ firebase-admin==5.2.0
 uvicorn==0.17.6
 virtualenv==20.14.1
 fastapi_utils==0.2.1
+beautifulsoup4==4.11.1
+lxml==4.9.0

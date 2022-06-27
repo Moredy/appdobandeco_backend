@@ -26,6 +26,8 @@ class GetResponseModel(BaseModel):
 class MenuBody(BaseModel):
     vegan: list
     notVegan: list
+    dinnerVegan: list
+    dinnerNotVegan: list
 
 @router.post("/menuService/createMenu/{dateStr}", response_model=DefaultResponseModel)
 async def create_menu(dateStr, menuBody: MenuBody, response: Response):
@@ -60,13 +62,20 @@ async def get_all_menus_data(response: Response):
 
 
 #Get menu by date and type
-@router.get("/menuService/getMenuByDateAndType/{date}/{vegan}", response_model=GetResponseModel)
-async def get_menu_by_date_and_type(date , vegan , response: Response):
+@router.get("/menuService/getMenuByDateAndType/{date}/{vegan}/{dinner}", response_model=GetResponseModel)
+async def get_menu_by_date_and_type(date , vegan , dinner, response: Response):
     menuRef = db.reference( 'menus/').child(date);
     menuData = menuRef.get()
 
-    #print(menuData)
-    menuList = menuData[vegan]
+    if dinner == False:
+        menuList = menuData[vegan]
+
+    if dinner == True and vegan == 'vegan':
+        menuList = menuData['dinnerVegan']
+
+    if dinner == False and vegan == 'notVegan':
+        menuList = menuData['dinnerNotVegan']
+
 
     response.status_code = status.HTTP_200_OK
     return {"statusCode": response.status_code, "dataObj": {"menuArray": menuList}};
