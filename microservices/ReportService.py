@@ -5,6 +5,7 @@ from firebase_admin import db
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
+import json
 
 router = APIRouter()
 
@@ -84,18 +85,16 @@ async def get_report_by_date_type(date, vegan, dinner, response: Response):
 
     selectedReports = []
 
-    dinner = str(dinner).lower()
-
     if vegan == 'vegan':
         veganBool = True
     else:
         veganBool = False
 
-
+    dinner = json.loads(dinner.lower())
 
     for report in allReports:
-        print(report['dinner'])
-        if report['date'] == date and report['vegan'] == veganBool and str(report['dinner']).lower() == dinner:
+        print(dinner)
+        if report['date'] == date and report['vegan'] == veganBool and report['dinner'] == dinner:
             selectedReports.append(report)
 
 
