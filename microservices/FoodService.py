@@ -23,15 +23,15 @@ class GetResponseModel(BaseModel):
 
 
 #Get Total Nutrients By Date Type
-@router.get("/foodService/getTotalNutrientsByDateType/{date}/{vegan}", response_model=GetResponseModel)
-async def get_total_nutrients_by_date_type(date, vegan, response: Response):
+@router.get("/foodService/getTotalNutrientsByDateType/{date}/{vegan}/{dinner}", response_model=GetResponseModel)
+async def get_total_nutrients_by_date_type(date, vegan, dinner, response: Response):
     
     totalCalories = 0
     totalProteins = 0
     totalLipids = 0
     totalCarbohydrates = 0
 
-    menu = await get_menu_by_date_and_type(date ,vegan , response)
+    menu = await get_menu_by_date_and_type(date ,vegan, dinner, response)
     menu = menu['dataObj']['menuArray']
   
     allFoods = await get_all_foods_data(response)
