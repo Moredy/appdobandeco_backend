@@ -67,13 +67,21 @@ async def get_menu_by_date_and_type(date , vegan , dinner, response: Response):
     menuRef = db.reference( 'menus/').child(date);
     menuData = menuRef.get()
 
-    if dinner == False:
+    dinner = str(dinner).lower()
+
+    menuList = {}
+
+    print(dinner)
+    print(vegan)
+
+    if dinner == 'false':
         menuList = menuData[vegan]
 
-    if dinner == True and vegan == 'vegan':
+    if dinner == 'true' and vegan == 'vegan':
         menuList = menuData['dinnerVegan']
 
-    if dinner == False and vegan == 'notVegan':
+    if dinner == 'true' and vegan == 'notVegan':
+        print("aaa")
         menuList = menuData['dinnerNotVegan']
 
 
