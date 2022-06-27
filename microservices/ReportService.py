@@ -92,8 +92,10 @@ async def get_report_by_date_type(date, vegan, dinner, response: Response):
         veganBool = False
 
 
+
     for report in allReports:
-        if report['date'] == date and report['vegan'] == veganBool and report['dinner'] == dinner:
+        print(report['dinner'])
+        if report['date'] == date and report['vegan'] == veganBool and str(report['dinner']).lower() == dinner:
             selectedReports.append(report)
 
 
