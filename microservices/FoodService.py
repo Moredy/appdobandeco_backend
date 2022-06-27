@@ -102,6 +102,8 @@ async def get_Food_Id_By_Name_Desc(name, desc, response: Response):
     return {"statusCode": response.status_code, "dataObj": {"foodId" : foodId}};
 
 
+
+
 #Get all foods
 @router.get("/foodService/getAllFoodsData/", response_model=GetResponseModel)
 async def get_all_foods_data(response: Response):
