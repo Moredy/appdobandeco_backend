@@ -70,10 +70,10 @@ async def get_menu_by_date_and_type(date , vegan , dinner, response: Response):
 
     dinner = str(dinner).lower()
 
-    menuList = {}
+    menuList = []
 
-    #print(dinner)
-    #print(vegan)
+    print(dinner)
+    print(vegan)
 
     if dinner == 'false':
         menuList = menuData[vegan]
@@ -86,6 +86,6 @@ async def get_menu_by_date_and_type(date , vegan , dinner, response: Response):
 
 
     response.status_code = status.HTTP_200_OK
-    return {"statusCode": response.status_code, "dataObj": {"menuArray": {}}};
+    return {"statusCode": response.status_code, "dataObj": {"menuArray": menuList}};
 
 
