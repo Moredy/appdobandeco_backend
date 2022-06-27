@@ -29,6 +29,7 @@ class ReportBody(BaseModel):
     vegan : bool
     message: str
     likes : int
+    dinner: bool
 
 
 @router.post("/reportService/createReport/", response_model=CreateResponseModel)
@@ -58,6 +59,7 @@ async def get_all_reports(response: Response):
             "vegan": reportObj['vegan'],
             "message" : reportObj['message'],
             "likes": reportObj['likes'],
+            "dinner" : reportObj['dinner']
         })
 
     Dict = {"reportsArray": reportData_array}
@@ -74,13 +76,15 @@ async def get_report_by_id(report_id, response: Response):
     response.status_code = status.HTTP_200_OK
     return {"statusCode": response.status_code, "dataObj": reportData};
 
-@router.get("/reportService/getReportByDateAndType/{date}/{vegan}", response_model=GetResponseModel)
-async def get_report_by_date_type(date, vegan, response: Response):
+@router.get("/reportService/getReportByDateAndType/{date}/{vegan}/{dinner}", response_model=GetResponseModel)
+async def get_report_by_date_type(date, vegan, dinner, response: Response):
     
     allReports = await get_all_reports(response)
     allReports = allReports['dataObj']['reportsArray']
 
     selectedReports = []
+
+    dinner = str(dinner).lower()
 
     if vegan == 'vegan':
         veganBool = True
@@ -89,7 +93,7 @@ async def get_report_by_date_type(date, vegan, response: Response):
 
 
     for report in allReports:
-        if report['date'] == date and report['vegan'] == veganBool:
+        if report['date'] == date and report['vegan'] == veganBool and report['dinner'] == dinner:
             selectedReports.append(report)
 
 

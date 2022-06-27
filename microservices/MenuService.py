@@ -81,7 +81,6 @@ async def get_menu_by_date_and_type(date , vegan , dinner, response: Response):
         menuList = menuData['dinnerVegan']
 
     if dinner == 'true' and vegan == 'notVegan':
-        print("aaa")
         menuList = menuData['dinnerNotVegan']
 
 
