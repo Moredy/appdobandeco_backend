@@ -53,7 +53,7 @@ def addFood(name):
     "foodShortDesc": "Não informado.",
     "foodDesc": "Não informado.",
     "proteins": 0,
-    "foodImage": "https://www.unicamp.br/unicamp/sites/default/files/inline-images/logo_124_0.png",
+    "foodImage": "https://i.ibb.co/Zxbh11q/pngwing-com-1.png",
     "carbohydrates": 0,
     "lipids": 0,
     "likes": 0,
