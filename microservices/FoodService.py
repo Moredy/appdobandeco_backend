@@ -122,6 +122,7 @@ async def get_all_foods_data(response: Response):
             "foodShortDesc": foodObj['foodShortDesc'],
             "foodDesc" : foodObj['foodDesc'],
             "proteins": foodObj['proteins'],
+            "portion": foodObj['portion'],
             "foodImage" : foodObj['foodImage'],
             "carbohydrates" : foodObj['carbohydrates'],
             "lipids": foodObj['lipids'],
@@ -143,6 +144,7 @@ class FoodBody(BaseModel):
     foodShortDesc: str
     foodDesc : str
     proteins: int
+    porcao: int
     foodImage : str
     carbohydrates : int
     lipids: int

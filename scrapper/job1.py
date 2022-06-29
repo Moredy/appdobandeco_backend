@@ -5,7 +5,7 @@ import requests
 from firebase_admin import db
 from datetime import datetime, date, time, timedelta, timezone
 
-jobInterval = 3600 #seconds
+jobInterval = 900 #seconds
 waitFirst=False
 
 
@@ -53,6 +53,7 @@ def addFood(name):
     "foodShortDesc": "Não informado.",
     "foodDesc": "Não informado.",
     "proteins": 0,
+    "portion": 0,
     "foodImage": "https://i.ibb.co/Zxbh11q/pngwing-com-1.png",
     "carbohydrates": 0,
     "lipids": 0,
@@ -76,7 +77,7 @@ def runJob1():
   menus = []
 
 
-  refeicao=refeicoes[2]
+  #refeicao=refeicoes[2]
 
   for refeicao in refeicoes:
 
