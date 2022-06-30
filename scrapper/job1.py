@@ -42,7 +42,7 @@ def checkIfFoodExistsByName(name):
 
     return founded
   except:
-    return False;
+    return checkIfFoodExistsByName(name);
 
 def addFood(name):
   foodRef = db.reference('foods/');
