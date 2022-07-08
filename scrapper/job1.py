@@ -27,21 +27,28 @@ url = 'https://www.sar.unicamp.br/RU/view/site/cardapio.php?data='+ano+'-'+mes+'
 # Busca no site do SAR as comidas, adiciona as mesmas ao app caso não estejam no catalogo de comidas
 # cria o menu do dia com base nos nomes das comidas
 
+
+
 def checkIfFoodExistsByName(name):
   try:
+    itensCompleted = 0
     foodRef = db.reference('foods/');
     foods = foodRef.get();
-
     founded = False
+    len(foods)
+
 
     for key in foods:
       #print(key)
-      foodObj = foodRef.child(key).get()
+      foodObj = foods[key]
+      itensCompleted += 1
+      #print(itensCompleted, len(foods) )
       if foodObj['foodName'] == name:
         founded = True
 
     return founded
-  except:
+  except Exception as e:
+    print('Failed: '+ str(e))
     return checkIfFoodExistsByName(name);
 
 def addFood(name):
@@ -121,7 +128,7 @@ def runJob1():
 
     #print(menus)
     menus.append(comidas)
-    #print(menus)
+    print(comidas)
     for comida in comidas:
       if checkIfFoodExistsByName(comida) == False:
         addFood(comida)
@@ -138,10 +145,10 @@ def runJob1():
     foodId = ''
 
     for food in foodData:
-      foodObjRef = foodRef.child(food)
-      foodObj = foodObjRef.get()
+      #foodObjRef = foodRef.child(food)
+      foodObj = foodData[food]
       if foodObj['foodName'] == name:
-        foodId = foodObjRef.key
+        foodId = food
 
     return foodId;
 
@@ -163,10 +170,13 @@ def runJob1():
 
     return menu;
 
-
+  print("Aqui1")
   menuRef = db.reference('menus/' + dia+'-'+mes+'-'+ano);
+  print("Aqui2")
   json_compatible_item_data = jsonable_encoder(createMenu([almocoVegetarianoMenu, almocoMenu, jantarVegetarianoMenu, jantarMenu]))
+  print("Aqui3")
   menuRef.update(json_compatible_item_data);
+  print("Aqui4")
 
   print("Success")
 
