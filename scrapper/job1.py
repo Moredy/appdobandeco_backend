@@ -75,7 +75,11 @@ def addFood(name):
 
 
 def runJob1():
-  webpage = requests.get(url)
+  try:
+    webpage = requests.get(url, verify=False)
+  except Exception as e:
+    print('Failed: '+ str(e))
+  print("Aqui1")
   soup = BeautifulSoup(webpage.content, "html.parser")
   dom = etree.HTML(str(soup))
 
