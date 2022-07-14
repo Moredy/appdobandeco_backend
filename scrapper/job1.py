@@ -79,7 +79,7 @@ def runJob1():
     webpage = requests.get(url, verify=False)
   except Exception as e:
     print('Failed: '+ str(e))
-  print("Aqui1")
+
   soup = BeautifulSoup(webpage.content, "html.parser")
   dom = etree.HTML(str(soup))
 
@@ -92,50 +92,54 @@ def runJob1():
 
   for refeicao in refeicoes:
 
-    pratoPrincipalElement = refeicao.find_all("strong", string="PRATO PRINCIPAL:")
-    pratoPrincipal = pratoPrincipalElement[0].parent.text.split(":",1)[1].strip();
-
-    guarnicaoElement = refeicao.find_all("strong", string="GUARNIÇÃO: ")
-    guarnicao = guarnicaoElement[0].parent.text.split(":",1)[1].strip();
-
-    proteinaElement = refeicao.find_all("strong", string="PROTEINA: ")
-    proteina = proteinaElement[0].parent.text.split(":",1)[1].strip();
-
-    saladaElement = refeicao.find_all("strong", string="SALADA: ")
-    salada = saladaElement[0].parent.text.split(":",1)[1].strip();
-
-    sobremesaElement = refeicao.find_all("strong", string="SOBREMESA: ")
-    sobremesa = sobremesaElement[0].parent.text.split(":", 1)[1].strip();
-
-    sucoElement = refeicao.find_all("strong", string="SUCO: ")
-    suco = sucoElement[0].parent.text.split(":", 1)[1].strip();
+    try:
+      pratoPrincipalElement = refeicao.find_all("strong", string="PRATO PRINCIPAL:")
+      pratoPrincipal = pratoPrincipalElement[0].parent.text.split(":",1)[1].strip();
 
 
-    pratoPrincipal = pratoPrincipal.encode("windows-1252").decode("utf-8")
-    guarnicao = guarnicao.encode("windows-1252").decode("utf-8")
-    proteina = proteina.encode("windows-1252").decode("utf-8")
-    salada = salada.encode("windows-1252").decode("utf-8")
-    sobremesa = sobremesa.encode("windows-1252").decode("utf-8")
-    suco = suco.encode("windows-1252").decode("utf-8")
+      guarnicaoElement = refeicao.find_all("strong", string="GUARNIÇÃO: ")
+      guarnicao = guarnicaoElement[0].parent.text.split(":",1)[1].strip();
 
-    comidas = {pratoPrincipal,
-               guarnicao,
-               proteina,
-               salada,
-               sobremesa,
-               suco}
+      proteinaElement = refeicao.find_all("strong", string="PROTEINA: ")
+      proteina = proteinaElement[0].parent.text.split(":",1)[1].strip();
 
-    comidas.remove('-')
+      saladaElement = refeicao.find_all("strong", string="SALADA: ")
+      salada = saladaElement[0].parent.text.split(":",1)[1].strip();
 
-    comidas.add('Arroz')
-    comidas.add('Feijão')
+      sobremesaElement = refeicao.find_all("strong", string="SOBREMESA: ")
+      sobremesa = sobremesaElement[0].parent.text.split(":", 1)[1].strip();
 
-    #print(menus)
-    menus.append(comidas)
-    print(comidas)
-    for comida in comidas:
-      if checkIfFoodExistsByName(comida) == False:
-        addFood(comida)
+      sucoElement = refeicao.find_all("strong", string="SUCO: ")
+      suco = sucoElement[0].parent.text.split(":", 1)[1].strip();
+
+
+      pratoPrincipal = pratoPrincipal.encode("windows-1252").decode("utf-8")
+      guarnicao = guarnicao.encode("windows-1252").decode("utf-8")
+      proteina = proteina.encode("windows-1252").decode("utf-8")
+      salada = salada.encode("windows-1252").decode("utf-8")
+      sobremesa = sobremesa.encode("windows-1252").decode("utf-8")
+      suco = suco.encode("windows-1252").decode("utf-8")
+
+      comidas = {pratoPrincipal,
+                 guarnicao,
+                 proteina,
+                 salada,
+                 sobremesa,
+                 suco}
+
+      comidas.remove('-')
+
+      comidas.add('Arroz')
+      comidas.add('Feijão')
+      menus.append(comidas)
+
+      print('''comidas''')
+      for comida in comidas:
+        if checkIfFoodExistsByName(comida) == False:
+          addFood(comida)
+
+    except Exception as e:
+      menus.append({})
 
   almocoMenu = menus[0]
   almocoVegetarianoMenu = menus[1]
@@ -174,13 +178,17 @@ def runJob1():
 
     return menu;
 
-  print("Aqui1")
-  menuRef = db.reference('menus/' + dia+'-'+mes+'-'+ano);
-  print("Aqui2")
-  json_compatible_item_data = jsonable_encoder(createMenu([almocoVegetarianoMenu, almocoMenu, jantarVegetarianoMenu, jantarMenu]))
-  print("Aqui3")
-  menuRef.update(json_compatible_item_data);
-  print("Aqui4")
+  try:
+    print([almocoVegetarianoMenu, almocoMenu])
+    print("Aqui11")
+    menuRef = db.reference('menus/' + dia+'-'+mes+'-'+ano);
+    print("Aqui2")
+    json_compatible_item_data = jsonable_encoder(createMenu([almocoVegetarianoMenu, almocoMenu, jantarVegetarianoMenu, jantarMenu]))
+    print("Aqui3")
+    menuRef.update(json_compatible_item_data);
+    print("Aqui4")
+  except Exception as e:
+    print('Failed: '+ str(e))
 
   print("Success")
 
