@@ -10,9 +10,9 @@ waitFirst=False
 
 
 
-dia = '14'#str(datetime.now().date().day)
-mes = '6'#str(datetime.now().date().month)
-ano = '2022'#str(datetime.now().date().year)
+dia = str(datetime.now().date().day)
+mes = str(datetime.now().date().month)
+ano = str(datetime.now().date().year)
 
 if int(dia) < 10:
   dia = '0' + dia
