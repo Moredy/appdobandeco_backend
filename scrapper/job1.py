@@ -10,9 +10,9 @@ waitFirst=False
 
 
 
-dia = str(datetime.now().date().day)
-mes = str(datetime.now().date().month)
-ano = str(datetime.now().date().year)
+dia = '14'#str(datetime.now().date().day)
+mes = '6'#str(datetime.now().date().month)
+ano = '2022'#str(datetime.now().date().year)
 
 if int(dia) < 10:
   dia = '0' + dia
@@ -37,7 +37,6 @@ def checkIfFoodExistsByName(name):
     founded = False
     len(foods)
 
-
     for key in foods:
       #print(key)
       foodObj = foods[key]
@@ -45,7 +44,6 @@ def checkIfFoodExistsByName(name):
       #print(itensCompleted, len(foods) )
       if foodObj['foodName'] == name:
         founded = True
-
     return founded
   except Exception as e:
     print('Failed: '+ str(e))
@@ -68,9 +66,13 @@ def addFood(name):
     "calories": 0
   }
 
-  newFoodRef = foodRef.push(foodObj);
+  if checkIfFoodExistsByName(name) == False:
+    newFoodRef = foodRef.push(foodObj);
+    return newFoodRef.key
+  else:
+    return -1
 
-  return newFoodRef.key
+
 
 
 
@@ -135,8 +137,7 @@ def runJob1():
 
       print('''comidas''')
       for comida in comidas:
-        if checkIfFoodExistsByName(comida) == False:
-          addFood(comida)
+        addFood(comida)
 
     except Exception as e:
       menus.append({})
