@@ -6,6 +6,7 @@ from microservices import FoodService
 from microservices import MenuService
 from microservices import ReportService
 from microservices import UserService
+from microservices import RankingService
 from fastapi.responses import RedirectResponse
 from fastapi_utils.tasks import repeat_every
 import uvicorn
@@ -44,6 +45,7 @@ app.include_router(FoodService.router)
 app.include_router(MenuService.router)
 app.include_router(ReportService.router)
 app.include_router(UserService.router)
+app.include_router(RankingService.router)
 
 @app.get("/")
 def read_root():
