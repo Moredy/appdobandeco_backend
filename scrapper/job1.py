@@ -5,7 +5,7 @@ import requests
 from firebase_admin import db
 from datetime import datetime, date, time, timedelta, timezone
 
-jobInterval = 900 #seconds
+jobInterval = 1800 #seconds
 waitFirst=False
 
 
@@ -31,17 +31,12 @@ url = 'https://www.sar.unicamp.br/RU/view/site/cardapio.php?data='+ano+'-'+mes+'
 
 def checkIfFoodExistsByName(name):
   try:
-    itensCompleted = 0
     foodRef = db.reference('foods/');
     foods = foodRef.get();
     founded = False
-    len(foods)
 
     for key in foods:
-      #print(key)
       foodObj = foods[key]
-      itensCompleted += 1
-      #print(itensCompleted, len(foods) )
       if foodObj['foodName'] == name:
         founded = True
     return founded

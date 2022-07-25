@@ -26,7 +26,7 @@ class GetResponseModel(BaseModel):
 
 
 
-@router.get("/rankingService/getRanking/{foodType}", response_model=GetResponseModel)
+@router.get("/rankingService/getRanking/{foodType}/vegan", response_model=GetResponseModel)
 async def get_ranking(foodType, response: Response):
 
     rankingListFinal = []
@@ -38,8 +38,7 @@ async def get_ranking(foodType, response: Response):
     foodsInFoodType = []
 
     for itemKey in rankingList:
-        #print(rankingList[itemKey])
-        if rankingList[itemKey]['foodType'] == foodType:
+        if rankingList[itemKey]['foodType'] == foodType and rankingList[itemKey]['foodType']:
             foodsInFoodType.append({'key': itemKey , 'obj': rankingList[itemKey]})
 
     foodsInFoodType.sort(key=lambda x: x['obj']['likes'])
