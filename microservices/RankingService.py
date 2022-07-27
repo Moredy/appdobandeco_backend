@@ -26,7 +26,7 @@ class GetResponseModel(BaseModel):
 
 
 
-@router.get("/rankingService/getRanking/{foodType}/vegan", response_model=GetResponseModel)
+@router.get("/rankingService/getRanking/{foodType}", response_model=GetResponseModel)
 async def get_ranking(foodType, response: Response):
 
     rankingListFinal = []
