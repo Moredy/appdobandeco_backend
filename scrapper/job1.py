@@ -85,8 +85,6 @@ def runJob1():
   menus = []
 
 
-  #refeicao=refeicoes[2]
-
   for refeicao in refeicoes:
 
     try:
@@ -109,13 +107,19 @@ def runJob1():
       sucoElement = refeicao.find_all("strong", string="SUCO: ")
       suco = sucoElement[0].parent.text.split(":", 1)[1].strip();
 
+      def decodeString(str):
+        try:
+          return str.encode('windows-1252').decode("utf-8");
+        except:
+          return str.encode('windows-1252', 'ignore').decode("latin-1");
 
-      pratoPrincipal = pratoPrincipal.encode("windows-1252").decode("utf-8")
-      guarnicao = guarnicao.encode("windows-1252").decode("utf-8")
-      proteina = proteina.encode("windows-1252").decode("utf-8")
-      salada = salada.encode("windows-1252").decode("utf-8")
-      sobremesa = sobremesa.encode("windows-1252").decode("utf-8")
-      suco = suco.encode("windows-1252").decode("utf-8")
+      pratoPrincipal = decodeString(pratoPrincipal)
+      guarnicao = decodeString(guarnicao)
+      proteina = decodeString(proteina)
+      salada = decodeString(salada)
+      sobremesa = decodeString(sobremesa)
+      suco = decodeString(suco)
+
 
       comidas = {pratoPrincipal,
                  guarnicao,
@@ -125,22 +129,27 @@ def runJob1():
                  suco}
 
       comidas.remove('-')
-
+      print
       comidas.add('Arroz')
       comidas.add('Feijão')
+
       menus.append(comidas)
 
-      print('''comidas''')
       for comida in comidas:
         addFood(comida)
 
     except Exception as e:
+      print(e)
       menus.append({})
 
   almocoMenu = menus[0]
   almocoVegetarianoMenu = menus[1]
   jantarMenu = menus[2]
   jantarVegetarianoMenu = menus[3]
+
+
+
+
 
   def getFoodIdByName(name):
     foodRef = db.reference('foods/');
@@ -171,6 +180,8 @@ def runJob1():
         "dinnerNotVegan" : idMenus[3]
 
     }
+
+    print(menu)
 
     return menu;
 
