@@ -26,9 +26,12 @@ class GetResponseModel(BaseModel):
 #Get Total Nutrients By Date Type
 @router.get("/foodService/getTotalNutrientsByDateType/{date}/{vegan}/{dinner}", response_model=GetResponseModel)
 async def get_total_nutrients_by_date_type(date, vegan, dinner, request: Request, response: Response):
+    try:
+        customPrefStr = request.query_params['customPrefStr']
+        customPrefObj = json.loads(customPrefStr)
+    except:
+        print("Ocorreu um erro ao setar customPrefStr")
 
-    customPrefStr = request.query_params['customPrefStr']
-    customPrefObj = json.loads(customPrefStr)
     print('customPrefObj')
     print(customPrefObj)
     totalCalories = 0
