@@ -30,7 +30,7 @@ async def get_total_nutrients_by_date_type(date, vegan, dinner, request: Request
         customPrefStr = request.query_params['customPrefStr']
         customPrefObj = json.loads(customPrefStr)
     except:
-        print("Ocorreu um erro ao setar customPrefStr")
+        customPrefObj = {}
 
     print('customPrefObj')
     print(customPrefObj)
