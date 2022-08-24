@@ -165,6 +165,7 @@ class FoodBody(BaseModel):
     foodDesc : str
     proteins: int
     porcao: int
+    spoonSizeInGrams: int
     foodImage : str
     carbohydrates : int
     lipids: int
