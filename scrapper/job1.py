@@ -54,7 +54,7 @@ def addFood(name):
     "foodDesc": "Não informado.",
     "proteins": 0,
     "portion": 0,
-    "spoonSizeInGrams": 0,
+    #"spoonSizeInGrams": 0,
     "foodImage": "https://i.ibb.co/Zxbh11q/pngwing-com-1.png",
     "carbohydrates": 0,
     "lipids": 0,
