@@ -6,7 +6,7 @@ from firebase_admin import db
 from datetime import datetime, date, time, timedelta, timezone
 
 jobInterval = 1800 #seconds
-waitFirst=True
+waitFirst=False
 
 
 
