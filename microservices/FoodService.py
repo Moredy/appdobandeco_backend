@@ -2,10 +2,11 @@ from array import array
 from multiprocessing.dummy import Array
 from warnings import catch_warnings
 from firebase_admin import db
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from pydantic import BaseModel
+import json
 from fastapi.encoders import jsonable_encoder
-from microservices.MenuService import get_menu_by_date_and_type 
+from microservices.MenuService import get_menu_by_date_and_type
 router = APIRouter()
 
 
@@ -24,8 +25,12 @@ class GetResponseModel(BaseModel):
 
 #Get Total Nutrients By Date Type
 @router.get("/foodService/getTotalNutrientsByDateType/{date}/{vegan}/{dinner}", response_model=GetResponseModel)
-async def get_total_nutrients_by_date_type(date, vegan, dinner, response: Response):
-    
+async def get_total_nutrients_by_date_type(date, vegan, dinner, request: Request, response: Response):
+
+    customPrefStr = request.query_params['customPrefStr']
+    customPrefObj = json.loads(customPrefStr)
+    print('customPrefObj')
+    print(customPrefObj)
     totalCalories = 0
     totalProteins = 0
     totalLipids = 0
@@ -33,33 +38,45 @@ async def get_total_nutrients_by_date_type(date, vegan, dinner, response: Respon
 
     menu = await get_menu_by_date_and_type(date ,vegan, dinner, response)
     menu = menu['dataObj']['menuArray']
-  
+
     allFoods = await get_all_foods_data(response)
     allFoods = allFoods['dataObj']['foodsArray']
 
     for food_id in menu:
         for foodObj in allFoods:
-            print(foodObj['id'])
+            #print(foodObj['id'])
             if foodObj['id'] == food_id:
-                totalProteins += foodObj['proteins']
-                totalCalories += foodObj['calories']
-                totalLipids += foodObj['lipids']
-                totalCarbohydrates += foodObj['carbohydrates']
-       
+                try:
+                    if foodObj['portion'] > 0:
+
+                        customFoodObj = customPrefObj['foods'][food_id]
+
+                        totalProteins += (float(customFoodObj['portion'])*foodObj['proteins'])/foodObj['portion']
+                        totalCalories += (float(customFoodObj['portion'])*foodObj['calories'])/foodObj['portion']
+                        totalLipids +=(float(customFoodObj['portion'])*foodObj['lipids'])/foodObj['portion']
+                        totalCarbohydrates += (float(customFoodObj['portion'])*foodObj['carbohydrates'])/foodObj['portion']
+                    else:
+                        raise ZeroDivisionError;
+                except:
+                    totalProteins += foodObj['proteins']
+                    totalCalories += foodObj['calories']
+                    totalLipids += foodObj['lipids']
+                    totalCarbohydrates += foodObj['carbohydrates']
+
 
 
     response.status_code = status.HTTP_200_OK
-    return {"statusCode": response.status_code, "dataObj": {"calories" : totalCalories, "proteins" : totalProteins, "lipids" : totalLipids, "carbohydrates": totalCarbohydrates}};
+    return {"statusCode": response.status_code, "dataObj": {"calories" : round(totalCalories,2), "proteins" : round(totalProteins,2), "lipids" : round(totalLipids,2), "carbohydrates": round(totalCarbohydrates,2)}};
 
 
 #Get Total Nutrients By Date Type And Nutrient
 @router.get("/foodService/getTotalNutrientsByDateTypeNutrient/{date}/{vegan}/{nutrient}", response_model=GetResponseModel)
 async def get_total_nutrients_by_date_type_nutrient(date, vegan, nutrient, response: Response):
     total = 0
-    
+
     menu = await get_menu_by_date_and_type(date ,vegan , response)
     menu = menu['dataObj']['menuArray']
-  
+
     allFoods = await get_all_foods_data(response)
     allFoods = allFoods['dataObj']['foodsArray']
 
@@ -68,7 +85,7 @@ async def get_total_nutrients_by_date_type_nutrient(date, vegan, nutrient, respo
             print(foodObj['id'])
             if foodObj['id'] == food_id:
                 total += foodObj[nutrient]
-       
+
 
 
     response.status_code = status.HTTP_200_OK
@@ -111,7 +128,7 @@ async def get_all_foods_data(response: Response):
     foodData = foodRef.get()
 
     foodData_array = []
-    
+
     for item in foodData:
         food = foodRef.child(item);
         foodObj = food.get()
@@ -180,10 +197,10 @@ def give_food_like(food_id: str, user_id: str , response: Response):
         likedFoods = userRef.get()['likedFoods']
     except:
         print("--Esse usuário ainda não deu like em nenhuma comida, adicionando primeiro registro")
-    
+
 
     #Caso não tenha dado like na comida
-    if not likedFoods.__contains__(food_id): 
+    if not likedFoods.__contains__(food_id):
         likedFoods.append(food_id)
     else:
        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR;
@@ -227,7 +244,7 @@ def remove_food_like(food_id: str, user_id: str, response: Response):
         return {"statusCode": response.status_code, "message": "Este usuário nunca deu like em nenhuma comida."}
 
     #Caso não tenha dado like na comida
-    if likedFoods.__contains__(food_id): 
+    if likedFoods.__contains__(food_id):
         likedFoods.remove(food_id)
     else:
        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR;
