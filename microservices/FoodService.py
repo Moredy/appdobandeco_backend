@@ -187,32 +187,32 @@ async def create_food(foodBody: FoodBody, response: Response):
 
 #Give like to a food - PUT
 @router.put(
-    "/foodService/givefoodlike/{food_id}/{user_id}",
+    "/foodService/givefoodlike/{food_id}",
     response_model=DefaultResponseModel
 )
-def give_food_like(food_id: str, user_id: str , response: Response):
-    userRef = db.reference( 'users/').child(user_id);
+def give_food_like(food_id: str, response: Response):
+    #userRef = db.reference( 'users/').child(user_id);
     foodRef = db.reference( 'foods/'+ str(food_id));
 
     likedFoods = []
     totalFoodLikes = 0
 
-    try:
-        likedFoods = userRef.get()['likedFoods']
-    except:
-        print("--Esse usuário ainda não deu like em nenhuma comida, adicionando primeiro registro")
+    #try:
+    #    likedFoods = userRef.get()['likedFoods']
+    #except:
+    #    print("--Esse usuário ainda não deu like em nenhuma comida, adicionando primeiro registro")
 
 
     #Caso não tenha dado like na comida
-    if not likedFoods.__contains__(food_id):
-        likedFoods.append(food_id)
-    else:
-       response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR;
-       return {"statusCode": response.status_code, "message": "Este usuário ja deu like nessa comida."}
-
-    userRef.update({
-        'likedFoods' : likedFoods
-    })
+    #if not likedFoods.__contains__(food_id):
+    #    likedFoods.append(food_id)
+    #else:
+    #   response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR;
+    #   return {"statusCode": response.status_code, "message": "Este usuário ja deu like nessa comida."}
+#
+    #userRef.update({
+    #    'likedFoods' : likedFoods
+    #})
 
     #Adiciona o like na comida
     try:
