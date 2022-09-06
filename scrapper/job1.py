@@ -120,6 +120,10 @@ def runJob1():
       salada = decodeString(salada)
       sobremesa = decodeString(sobremesa)
       suco = decodeString(suco)
+      
+      if(suco.find("Suco") == -1):
+        suco = f'Suco de {suco}'
+      
 
 
       comidas = {pratoPrincipal,
