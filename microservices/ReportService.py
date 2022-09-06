@@ -25,7 +25,8 @@ class GetResponseModel(BaseModel):
 
 #Create Report - POST
 class ReportBody(BaseModel):
-    user_uid: str
+    #user_uid: str
+    name: str
     date: str
     vegan : bool
     message: str
