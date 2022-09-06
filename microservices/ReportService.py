@@ -56,7 +56,8 @@ async def get_all_reports(response: Response):
         reportObj = report.get()
         reportData_array.append({
             "id_report": report.key,
-            "user_uid": reportObj['user_uid'],
+            #"user_uid": reportObj['user_uid'],
+            "name": reportObj['name'],
             "date": reportObj['date'],
             "vegan": reportObj['vegan'],
             "message" : reportObj['message'],
